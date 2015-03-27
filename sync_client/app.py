@@ -2,16 +2,16 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-26 21:36:15
+# Last modified   : 2015-03-27 19:04:47
 # Filename        : app.py
 # Description     : 
 from __future__ import unicode_literals
 
 from websocket import WebSocketApp
 from config import sync_config
+from sync import SyncHandler, fetch_sync_list
 import sys
 import json
-
 
 class SyncWebSocketApp(WebSocketApp):
     abort_exit = False
@@ -21,9 +21,11 @@ class SyncWebSocketApp(WebSocketApp):
                 on_message = self.on_message,
                 on_error = self.on_error,
                 on_close = self.on_close)
+        self.server_id = sync_config.server_id
 
     def on_open(self, ws):
-        ws.send(sync_config.server_id) # 建立连接后，向服务器发送自己的id，以完成注册
+        ws.send(self.server_id) # 建立连接后，向服务器发送自己的id，以完成注册
+        fetch_sync_list(self.server_id) # 建立连接后，向服务器获取跟自己有关的所有同步操作指令
 
     def on_message(self, ws, message):
         response = json.loads(message)
@@ -32,7 +34,9 @@ class SyncWebSocketApp(WebSocketApp):
             self.print_error(error)
             return
 
-        print(response)
+        sync_handler = SyncHandler(response)
+        if sync_handler.exec_sync(): # 如果同步执行成功，则回复成功
+            sync_handler.reply_sync()
 
     def print_error(self, error):
         sys.stderr.write(error + '\n')

@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-26 21:39:11
+# Last modified   : 2015-03-27 16:42:52
 # Filename        : db.py
 # Description     : 
 
@@ -57,7 +57,7 @@ class Collection():
                 'server_id'     :   sync_config.server_id,
                 }
 
-        post(sync_config.post_url, _post_data)
+        post(sync_config.sync_url, _post_data)
 
         return getattr(self, operation)(*args, **kwargs)
 
