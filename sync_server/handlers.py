@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-27 19:20:32
+# Last modified   : 2015-03-27 20:05:57
 # Filename        : handlers.py
 # Description     : 
 from __future__ import unicode_literals
@@ -52,7 +52,7 @@ class SyncHandler(PublicHandler):
         sync_data = self.get_argument('sync_data')
         sync_id = str(uuid4().hex) # 每一个操作都对应着一个指令
         self.add_sync_data_queue(sync_id, sync_data)
-        self.server_manager.broad_sync(server_id = self.from_server_id,
+        self.server_manager.broad_sync(from_server_id = self.from_server_id,
             response = {
                 'sync_list' :{
                     sync_id     :   sync_data,
