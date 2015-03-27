@@ -2,7 +2,7 @@
 #coding:utf8
 # Author          : tuxpy
 # Email           : q8886888@qq.com
-# Last modified   : 2015-03-27 19:04:47
+# Last modified   : 2015-03-27 19:46:42
 # Filename        : app.py
 # Description     : 
 from __future__ import unicode_literals
@@ -39,7 +39,7 @@ class SyncWebSocketApp(WebSocketApp):
             sync_handler.reply_sync()
 
     def print_error(self, error):
-        sys.stderr.write(error + '\n')
+        sys.stderr.write(str(error) + '\n')
         self.abort_exit = True
 
     def print_info(self, info):
